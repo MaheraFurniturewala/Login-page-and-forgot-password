@@ -6,6 +6,8 @@ const db = require('./config/mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const googleStrategy = require('./config/passport-google-oauth2.0.js');
+
 const MongoStore = require('connect-mongo')(session);
 app.use(express.urlencoded({ extended: false }));
 
@@ -41,11 +43,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.setAuthenticatedUser);
 
 //use express Router
 app.use('/', require('./routes'));
 
-app.use(passport.setAuthenticatedUser);
+
 
 app.listen(port, (err) => {
     if (err) {

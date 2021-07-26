@@ -1,1 +1,14 @@
-<h1>This is the profile page</h1>
+<html>
+    <head>
+        <title><%= title %></title>
+    </head>
+</html>
+<body>
+    <h1>This is the profile page</h1>
+    <% if(locals.user){ %>
+        <%=profile_user.name %>
+        <%=profile_user.email %>
+    <%}%>
+    
+</body>
+

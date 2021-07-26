@@ -2,7 +2,14 @@ const User = require('../models/user');
 
 //going to the sign-up page
 module.exports.profile = function(req,res){
-   res.render('profile');
+   User.findById( req.params.id,function(err,user){
+       if(err){
+           console.log("Error in finding user",err);
+           return res.redirect('/');
+       }else{
+           return res.render('profile',{title:'Profile page',profile_user:user})
+       }
+   })
 }
 
 module.exports.sign_up = function(req, res){
@@ -19,7 +26,7 @@ module.exports.sign_up = function(req, res){
 module.exports.sign_in = function(req, res){
 
     if (req.isAuthenticated()){
-        return res.render('profile')
+        return res.redirect('/users/profile');
     }
     return res.render('sign_in', {
         title: " Sign In"
@@ -57,5 +64,10 @@ module.exports.create_session = function(req, res){
     //req is an object so we are setting up the flash object
     //the first type of the flash message is success however we can name it anything
     console.log("Session created");
-    return res.redirect('/users');
+    return res.redirect('/');
 }
+
+module.exports.log_out = function(req, res){
+    req.logout();
+    res.redirect('/');
+  }
