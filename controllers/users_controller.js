@@ -1,15 +1,30 @@
 const User = require('../models/user');
 
 //going to the sign-up page
-module.exports.sign_up = function(req,res){
-    return res.render('sign_up.ejs');
+module.exports.profile = function(req,res){
+   res.render('profile');
 }
 
+module.exports.sign_up = function(req, res){
+    if (req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+
+
+    return res.render('sign_up', {
+        title: " Sign Up"
+    });
+}
 //going tot the sign-in page
-module.exports.sign_in = function(req,res){
-    return res.render('sign_in.ejs');
-}
+module.exports.sign_in = function(req, res){
 
+    if (req.isAuthenticated()){
+        return res.render('profile')
+    }
+    return res.render('sign_in', {
+        title: " Sign In"
+    });
+}
 //when user is signing up
 module.exports.create = function(req,res){
   if(req.body.password != req.body.confirm_password){
@@ -37,6 +52,10 @@ module.exports.create = function(req,res){
   }
 }
 
-module.exports.create_session = function(req,res){
-    return res.redirect('/users/profile');
+// sign in and create a session for the user
+module.exports.create_session = function(req, res){
+    //req is an object so we are setting up the flash object
+    //the first type of the flash message is success however we can name it anything
+    console.log("Session created");
+    return res.redirect('/users');
 }
